@@ -1,5 +1,13 @@
 <?php
-// Here your code !
+    /*
+        Problem URL : http://abc033.contest.atcoder.jp/tasks/abc033_b
+
+        Result : AC
+        Time   : 59 ms
+        Memory : 5196 KB
+     */
+
+   // Here your code !
     $fp = fopen("php://stdin", "r+");
     $N = trim(fgets($fp));
     $totalP = 0;
