@@ -8,6 +8,8 @@
         Memory :  KB
      */
 
+    $answer = 0;
+
     $parent = array();
     $rank = array();
 
@@ -16,21 +18,26 @@
         $parent[$x] = $x;
         $rank[$x] = 0;
     }
-     
+
     function Union($x, $y) {
         global $rank, $parent;
-        $xRoot = (int) Find($x);
-        $yRoot = (int) Find($y);
-        // var_dump($xRoot);
-        // var_dump($yRoot);
+        $xRoot = Find($x);
+        $yRoot = Find($y);
+        // printf("root %2d-%2d\n", $xRoot, $yRoot);
+
         if ($rank[$xRoot] > $rank[$yRoot]) {
+            // echo "case A\n";
             $parent[$yRoot] = $xRoot;
         } elseif ($rank[$xRoot] < $rank[$yRoot]) {
+            // echo "case B\n";
             $parent[$xRoot] = $yRoot;
         } elseif ($xRoot != $yRoot) {
+            // echo "case C\n";
             $parent[$yRoot] = $xRoot;
             $rank[$xRoot] = $rank[$xRoot] + 1;
-        } // x と y が同じ集合にない場合だけマージする。
+        } else {
+            // echo "case Z\n";
+        }
     }
 
     function Find($x) {
@@ -38,8 +45,9 @@
         if ($parent[$x] == $x) {
            return $x;
         } else {
-           $parent[$x] = Find($parent[$x]);
-           return $parent[$x];
+            // echo "Find[$x]\n";
+            $parent[$x] = Find($parent[$x]);
+            return $parent[$x];
        }
    }
 
@@ -51,16 +59,19 @@
 
     for ($i = 0; $i < $M; $i++) {
         list($x, $y) = explode(' ', trim(fgets($fp)));
-        Union($x, $y);
-        // var_dump($parent);
-    }
-    /*
-    foreach ($parent as $key => $value) {
-        printf ("%6d %6d %6d\n", $key, $value, $rank[$key]);
-    }
-    */
-    $arr = array_unique($parent);
+        // printf("base %2d-%2d\n", $x, $y);
 
-    $answer = count(array_unique($parent)) - 1;
+        Union((int)$x, (int)$y);
+    }
+
+    foreach ($parent as $k => $v) {
+        // 頂点の数を数える
+        if ($k == $v) {
+            $answer++;
+        }
+    }
+
+    // n部グラフなら、繋ぐのに必要なのはn-1本
+    $answer -= 1;
 
     echo $answer . PHP_EOL;
