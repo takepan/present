@@ -22,7 +22,7 @@ class Test
         $this->obj = new \stdClass();
         $this->obj->a = 0;
         $this->obj->b = new \stdClass();
-        $this->obj->b->c = 0;
+        $this->obj->b->c = 99;
         $this->obj->b->d = 0;
 
     }
