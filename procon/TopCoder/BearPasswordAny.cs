@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BearPasswordAny
-{
     class BearPasswordAny
     {
         public string findPassword(int[] x) {
@@ -16,7 +14,18 @@ namespace BearPasswordAny
             // const bool debug = true;
             // const bool debug = false;
 
-            if (x[0] == 0) flag = false;
+            if (x[0] == 0) return "";
+            if (x[0] == 1) {
+                if (len == 1) {
+                    return "a";
+                }
+                if (len == 2 && x[1] == 0) {
+                    return "";
+                }
+            }
+            if (x[0] != len) {
+                return "";
+            }
 
             while(flag) {
                 for (int i = len - 1; i > 0; i--) {
@@ -71,20 +80,4 @@ namespace BearPasswordAny
             }
             return ans;
         }
-
-        static void Main(string[] args)
-        {
-            BearPasswordAny obj = new BearPasswordAny();
-            int[] x = {5,0,0,0,0};
-            // int[] x = {4,2,1,0};
-            // int[] x = {3,1,1};
-            // int[] x = {4,3,2,1};
-            // int[] x = {0};
-            // int[] x = {4,0,3,2};
-            // int[] x = {6,3,1,0,0,0};
-            // int[] x = {10,5,2,1,0,0,0,0,0,0};
-            // int[] x = {5,4,2,1,0};
-            Console.WriteLine(obj.findPassword(x));
-        }
     }
-}
