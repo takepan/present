@@ -1,0 +1,51 @@
+start();
+loop(function() {
+  for (i = 0; i < 10000; i++) {
+    work();
+  }
+  buy1 = cash / 10;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.shikaku < 100) {
+    for (j = 0; j < buy1; j++) {
+      purchase(0);      
+    }
+  }
+
+  buy2 = cash / 500;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.affiliate < 100) {
+    for (j = 0; j < buy2; j++) {
+      purchase(1);
+    }
+  }
+
+  buy3 = cash / 2000;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.kabu < 100) {
+    for (j = 0; j < buy3; j++) {
+      purchase(2);
+    }
+  }
+
+  buy4 = cash / 10000;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.tochi < 100) {
+    for (j = 0; j < buy4; j++) {
+      purchase(3);
+    }
+  }
+
+  buy5 = cash / 17000;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.programming < 100) {
+    for (j = 0; j < buy5; j++) {
+      purchase(4);
+    }
+  }
+
+}, 1);
