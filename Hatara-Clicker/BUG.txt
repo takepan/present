@@ -1,0 +1,81 @@
+start();
+for (j = 0; j < 100; j++) {
+  for (i = 0; i < 8500; i++) {
+    work();
+  }
+  purchase(4);
+}
+for (i = 0; i < 5000; i++) {
+  work();
+}
+purchase(3);
+purchase(3);
+purchase(3);
+
+for (j = 0; j < 30; j++) {
+  for (i = 0; i < 5000; i++) {
+    work();
+  }
+  //print(cash);
+  purchase(3);
+  purchase(3);
+  purchase(3);
+  //print(cash);
+  //print("");
+}
+
+loop(function() {
+  for (i = 0; i < 10000; i++) {
+    work();
+  }
+  // 10(2) 22(3.5) 35(5) 自然増なし
+  // 500 1125 自然増なし
+  // 2000 4500 自然増あり
+  // 10000 22500 自然増あり(+10)
+  // 17000 38250 自然増なし クリック単価+20
+  buy1 = cash / 10;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.shikaku < 100) {
+    for (j = 0; j < buy1; j++) {
+      purchase(0);      
+    }
+  }
+
+  buy2 = cash / 500;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.affiliate < 100) {
+    for (j = 0; j < buy2; j++) {
+      purchase(1);
+    }
+  }
+
+  buy3 = cash / 2000;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.kabu < 100) {
+    for (j = 0; j < buy3; j++) {
+      purchase(2);
+    }
+  }
+
+  buy4 = cash / 10000;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.tochi < 100) {
+    for (j = 0; j < buy4; j++) {
+      purchase(3);
+    }
+  }
+
+  buy5 = cash / 17000;
+  //print(buy1);
+  //print(items.shikaku);
+  if (items.programming < 100) {
+    for (j = 0; j < buy5; j++) {
+      purchase(4);
+    }
+  }
+
+}, 1);
