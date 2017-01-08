@@ -10,44 +10,86 @@
 
 ini_set('memory_limit', -1);
 
-// define('DEBUG', true);
-define('DEBUG', false);
+define('DEBUG', true);
+// define('DEBUG', false);
 
 // test
-$N = 10;
-$a = array(3, 9, 7, 1, 10, 8, 5, 2, 4, 6);
+// $N = 10;
+// $a = array(3, 9, 7, 1, 10, 8, 5, 2, 4, 6);
 
 fscanf(STDIN, "%d", $N);
 $a = explode(" ", trim(fgets(STDIN)));
 
+$a_address = array_flip($a);
+$mmap = array();
+$rmap = array();
+$area = 0;
 $ans = 0;
-$cnt = 0;
-$NN = $N;
-$aa = $a;
-$address = array();
-while($aa) {
-	$sorted = array_flip($aa);
-	$address[$NN] = $sorted[$NN];
-	array_splice($aa, $sorted[$NN], 1);
-	$NN--;
-}
-if (DEBUG) var_dump($address);
+// var_dump($a_address);
 
-$mem = array(0, $N+1);
-$sorted = array_flip($a);
-ksort($sorted);
-foreach ($sorted as $key => $val) {
-	$pos = $address[$key];
-	$l = $mem[$pos];
-	$r = $mem[$pos+1];
-	if (DEBUG) echo "key:{$key} val:{$val} cnt:{$cnt} l:{$l} r:{$r}\n";
-	array_splice($mem, $pos+1, 0, $val+1);
-	$left = $val - $l + 1;
-	$right = $r - $val - 1;
-	if (DEBUG) echo "{$left} {$right}\n";
-	$ans += $left * $right * $key;
-	if (DEBUG) echo "ans = " . $ans . PHP_EOL;
-	if (DEBUG) echo "mem: " . implode(" ", $mem) . PHP_EOL;
+for ($i = $N; $i > 0; $i--) {
+    $pos = $a_address[$i];
+    // echo "{$i} {$a_address[$i]}\n";
+    // $l = array_search($pos - 1, $mmap);
+    $l = isset($rmap[$pos-1]);
+    $r = isset($mmap[$pos+1]);
+    if ($l === false) {
+        if ($r === false) {
+            // 左も右もない
+            $lw = 1;
+            $rw = 1;
+            $mmap[$pos] = $pos;
+            $rmap[$pos] = $pos;
+        } else {
+            // 右だけある
+            $lw = 1;
+            $rw = $mmap[$pos+1] - $pos + 1;
+            $mmap[$pos] = $mmap[$pos+1];
+            $rmap[$mmap[$pos+1]] = $pos;
+            unset($mmap[$pos+1]);
+        }
+    } else {
+        if ($r === false) {
+            // 左だけある
+            $lw = $pos - $rmap[$pos-1] + 1;
+            $rw = 1;
+            $mmap[$rmap[$pos-1]] = $pos;
+            $rmap[$pos] = $rmap[$pos-1];
+            unset($rmap[$pos-1]);
+        } else {
+            // 左も右もある
+            $lw = $pos - $rmap[$pos-1] + 1;
+            $rw = $mmap[$pos+1] - $pos + 1;
+            $mmap[$rmap[$pos-1]] = $mmap[$pos+1];
+            $rmap[$mmap[$pos+1]] = $rmap[$pos-1];
+            unset($mmap[$pos+1]);
+            unset($rmap[$pos-1]);
+        }
+    }
+
+    if (DEBUG) {
+        ksort($mmap);
+        $arrTmp = array();
+        foreach ($mmap as $key => $val) {
+            $arrTmp[] = "{$key}->{$val}";
+        }
+
+        ksort($rmap);
+        $arrTmp2 = array();
+        foreach ($rmap as $key => $val) {
+            $arrTmp2[] = "{$key}->{$val}";
+        }        
+    }
+
+    // $area += $lw * $rw;
+    $ans += $lw * $rw * $i;
+    if (DEBUG) {
+        printf("N:%d lw:%d rw:%d\n", $i, $lw, $rw);
+        printf("mmap:%s\n", implode(" ", $arrTmp));
+        printf("rmap:%s\n", implode(" ", $arrTmp2));
+        echo PHP_EOL;
+    }
 }
 
+// echo "area={$area}\n";
 echo $ans . PHP_EOL;
