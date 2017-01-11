@@ -1,8 +1,28 @@
 <?php
-	fscanf(STDIN, "%d", $N);
-	fscanf(STDIN, "%s", $S);
+    fscanf(STDIN, "%d", $N);
+    fscanf(STDIN, "%s", $S);
 
-	$l = substr_count($S, '<');
-	$r = substr_count($S, '>');
+    $intSL = strpos($S, ">");
+    $intSR = strpos($S, "<");
+    $intEL = strrpos($S, "<");
+    $intER = strrpos($S, ">");
 
-	echo abs($l - $r);
+    // var_dump($intSL);
+    // var_dump($intSR);
+    // var_dump($intEL);
+    // var_dump($intER);
+
+    $ans = 0;
+    if ($intSL === false || $intSR === false || $intEL === false || $intER === false) {
+        $ans = $N;
+    } else {
+        if ($intSR < $intSL) {
+            $ans += $intSL;
+        }
+
+        if ($intER > $intEL) {
+            $ans += $N - $intEL - 1;
+        }
+    }
+
+    echo $ans;
