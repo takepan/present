@@ -1,0 +1,72 @@
+<html><head>
+<title>子ウィンドウ</title>
+
+<style type="text/css">
+
+h1{
+font-size:18px;
+}
+
+
+#box{
+	width:100px;
+	height:100px;
+	background-color:#ccc;
+	position:absolute;
+	left:0;
+}
+
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+
+
+var flag=true;
+
+$("#btn").click(function(){
+
+	if(!window.opener || window.opener.closed){ // メインウィンドウの存在をチェック
+
+		window.alert('メインウィンドウがありません'); // 存在しない場合は警告ダイアログを表示
+		return false;
+	}
+	
+	
+	flag=!flag;
+	var dom=window.opener.document.getElementById('box');
+
+	if(flag){
+		$(dom).stop().animate({
+		width:300+"px",
+		height:300+"px"
+	},500);
+	}else{
+		$(dom).stop().animate({
+		width:100+"px",
+		height:100+"px"
+	},500);
+	}
+});
+
+
+});
+
+
+
+// -->
+</script>
+
+</head>
+<body>
+<h1>【JavaScript】子ウィンドウ／親ウィンドウのお互いの要素を操作するには！？</h1>
+
+<p><a href="#" id="btn">親ウィンドウのボックスをアニメーションさせる。</a></p>
+
+<p>下は親ウィンドウから操作されるボックスです。</p>
+
+<div id="box"></div>
+
+
+</body></html>
