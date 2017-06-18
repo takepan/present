@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+<script>
+window.onload = function() {
+    // var element = document.getElementById('hoge'); // hoge というIDがついたやつを取得する
+    // var rect = element.getBoundingClientRect();
+    var rect = document.getElementById('a1').getBoundingClientRect();
+    console.log(rect.left);   // x座標(絶対座標)
+    console.log(rect.top);    // y座標(絶対座標)
+    console.log(rect.width);  // 幅
+    console.log(rect.height); // 高さ
+    var top = document.getElementById('a1').getBoundingClientRect().top;
+    console.log(rect.top);    // y座標(絶対座標)
+}
+</script>
+</head>
+<body>
+    <div id="a1">AAA</div>
+    <br>
+    <div id="a2">AAA</div>
+    <br>
+    <div id="a3">AAA</div>
+    <br>
+    <div id="a4">AAA</div>
+    <br>
+    <div id="a5">AAA</div>
+    <br>
+    <div id="a6">AAA</div>
+    <br>
+    <div id="a7">AAA</div>
+    <br>
+    <div id="a8">AAA</div>
+    <br>
+    <div id="a9">AAA</div>
+    <br>
+    <div id="a10">AAA</div>
+    <br>
+    <div id="hoge">hoge</div>
+</body>
+</html>
