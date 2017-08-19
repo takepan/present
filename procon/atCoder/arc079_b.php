@@ -8,21 +8,15 @@ define('DEBUG', false);
 
 $arr = array();
 
-fscanf(STDIN, "%d %d", $N, $M);
-for ($i = 0; $i < $M; $i++) {
-    fscanf(STDIN, "%d %d", $a, $b);
-    if ($a == 1 || $b == 1) {
-        $aa[$b] = 1;
-    }
-    if ($a == $N || $b == $N) {
-        $bb[$a] = 1;
-    }
-}
+fscanf(STDIN, "%d %d", $K);
 
-foreach ($aa as $key => $val) {
-    if (isset($bb[$key])) {
-        echo "POSSIBLE\n";
-        exit;
-    }
+$K = 5;
+
+$a = $K * 2;
+$b = 0;
+
+for ($i = 0; $i < $K; $i++) {
+    $a -= 2;
+    $b += 1;
+    
 }
-echo "IMPOSSIBLE\n";

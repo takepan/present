@@ -1,30 +1,66 @@
 <?php
     $uf = new UnionFind();
-    for ($i = 1; $i <= 10; $i++) {
-        $uf->MakeSet($i);
-        // var_dump($uf->Find($i));
-    }
-    for ($i = 3; $i <= 10; $i++) {
-        $uf->Union($i, $i-2);
-        echo "{$i} ";
-        echo $uf->Find($i);
-        echo PHP_EOL;
-    }
+    // for ($i = 1; $i <= 10; $i++) {
+    //     $uf->MakeSet($i);
+    //     // var_dump($uf->Find($i));
+    // }
+
+    // for ($i = 3; $i <= 10; $i++) {
+    //     $uf->Union($i, $i-2);
+    //     echo "{$i} ";
+    //     echo $uf->Find($i);
+    //     echo PHP_EOL;
+    // }
+
+    $a = $uf->Find(1);
+    $b = $uf->Find(5);
+    echo "R {$a} {$b}\n";
+    $uf->Union(1,5);
+    $a = $uf->Find(1);
+    $b = $uf->Find(5);
+    echo "R {$a} {$b}\n";
+    $uf->DumpAll();
+    $uf->Union(2,4);
+    $uf->DumpAll();
+    $uf->Union(4,5);
+    $uf->DumpAll();
 
     // var_dump($uf);
 
-    for ($i = 1; $i <= 10; $i++) {
-        echo $uf->Find($i) . PHP_EOL;
-    }
+    // for ($i = 1; $i <= 10; $i++) {
+    //     printf("[%d]%d ", $i, $uf->Find($i));
+    // }
+    // echo "\n";
+
+    // $uf->DumpAll();
 
     // var_dump($uf);
 
     class UnionFind {
 
+        var $cnt;
         var $data;
+        // var $debug = true;
+        var $debug = false;
 
-        function __construct() {
+        function __construct($cnt = 10) {
+            $this->cnt = $cnt;
             $this->data = array();
+            $this->MakeSetAll();
+        }
+
+        function MakeSetAll() {
+            for ($i = 1; $i <= $this->cnt; $i++) {
+                $this->MakeSet($i);
+            }
+        }
+
+        function DumpAll() {
+            if ($this->debug === false) return;
+            for ($i = 1; $i <= $this->cnt; $i++) {
+                printf("[%d]%d ", $i, $this->Find($i));
+            }
+            echo "\n";
         }
 
         function MakeSet($x) {
@@ -44,20 +80,20 @@
             // print_r($yRoot);
             if ($xRoot['rank'] > $yRoot['rank']) {
                 $this->data[$yRoot]['parent'] = $xRoot;
-                echo "$yRoot parent changes $xRoot\n";
+                if ($this->debug) echo "$yRoot parent changes $xRoot\n";
                 // $yRoot['parent'] = $xRoot;
             } elseif ($xRoot['rank'] < $yRoot['rank']) {
                 $this->data[$xRoot]['parent'] = $yRoot;
-                echo "$xRoot parent changes $yRoot\n";
+                if ($this->debug) echo "$xRoot parent changes $yRoot\n";
                 // $xRoot['parent'] = $yRoot;
             } elseif ($xRoot != $yRoot) {
                 $this->data[$yRoot]['parent'] = $xRoot;
-                echo "$yRoot parent changes $xRoot\n";
+                if ($this->debug) echo "$yRoot parent changes $xRoot\n";
                 $this->data[$xRoot]['rank']++;
                 // $yRoot['parent'] = $xRoot;
                 // $xRoot['rank'] = $xRoot['rank'] + 1;
             }
-            echo "OK\n";
+            if ($this->debug) echo "OK\n";
         }
 
         function Find($x) {

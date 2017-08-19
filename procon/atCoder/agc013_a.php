@@ -1,50 +1,49 @@
 <?php
-    /*
-        Problem URL : http://agc013.contest.atcoder.jp/tasks/agc013_a
+/*
+    Problem URL : http://agc013.contest.atcoder.jp/tasks/agc013_a
 
-        Score  :
-        Result :
-        Time   : ms
-        Memory : KB
-     */
+    Score  :
+    Result :
+    Time   : ms
+    Memory : KB
+ */
 
-    ini_set('error_reporting', E_ALL & ~E_NOTICE);
 
-    // define('DEBUG', true);
-    define('DEBUG', false);
+define('DEBUG', true);
+// define('DEBUG', false);
 
-    if (DEBUG) {
-        $start = microtime(true);
+fscanf(STDIN, "%d", $N);
+$A = explode(" ", trim(fgets(STDIN)));
+
+var_dump($A);
+
+$ans = 0;
+
+for ($i = 0; $i < $N - 1; $i++) {
+    if (DEBUG) echo "* {$A[$i]} {$A[$i+1]}\n"; 
+    if ($A[$i+1] == $A[$i]) {
+        $flg = 0;
+        echo "B";
+    } elseif ($A[$i+1] > $A[$i]) {
+        $flg = 1;
+        echo "C";
+    } else {
+        $flg = -1;
+        echo "A";
     }
 
-    $ans = 0;
-    $direction = "";
-    $prev = "";
-
-    fscanf(STDIN, "%d\n", $N);
-    $A = explode(" ", trim(fgets(STDIN)));
-
-    foreach ($A as $val) {
-        if ($prev == "") {
+    if ($flg != 0) {
+        if (!isset($prev)) {
+            $prev = $flg;
             $ans++;
-        } elseif ($prev < $val) {
-            $direction_tmp = "increase";
-        } elseif ($prev > $val) {
-            $direction_tmp = "decrease";
         } else {
-
-        }
-
-        if ($direction == "") {
-            $direction = $direction_tmp;
-        } else {
-            if ($direction != $direction_tmp) {
-                $direction = "";
+            if ($flg != $prev) {
                 $ans++;
-            }
+                unset($prev);
+            }            
+            if (DEBUG) echo "{$prev} flg:{$flg} ans:{$ans} " . PHP_EOL;
         }
-        $prev = $val;
-        if (DEBUG) echo "$val $ans $direction_tmp \n";
     }
+}
 
-    echo $ans . PHP_EOL;
+echo $ans . PHP_EOL;

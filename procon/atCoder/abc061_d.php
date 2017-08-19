@@ -1,63 +1,37 @@
 <?php
+/*
+    Problem URL : http://agc013.contest.atcoder.jp/tasks/agc013_a
+
+    Score  :
+    Result :
+    Time   : ms
+    Memory : KB
+ */
+
+
+// define('DEBUG', true);
+define('DEBUG', false);
+
+ini_set('error_reporting', E_ALL & ~E_NOTICE);
+
+$arr = array();
+
+$arrF = array();
+$arrT = array();
 
 fscanf(STDIN, "%d %d", $N, $M);
-
-define('NMAX', 1000);
-define('MMAX', 2000);
-
-$a = array();
-$b = array();
-$c = array();
-
-for ($i = 0; $i < $M; ++$i) {
-    fscanf(STDIN, "%d %d %d", $a[$i], $b[$i], $c[$i]);
-    $c[$i] = -$c[$i];
+for ($i = 0; $i < $M; $i++) {
+    fscanf(STDIN, "%d %d %d", $a, $b, $c);
+    $arr[$a][$b] = $c;
+    $arrF[$a]++;
+    $arrT[$b]++;
 }
 
-$dist = array();
-
-for ($i = 0; $i < $N; ++$i) {
-    $dist[$i] = PHP_INT_MAX;
-}
-
-$dist[0] = 0;
-
-for ($loop = 0; $loop < $N - 1; ++$loop) {
-    for ($i = 0; $i < $M; ++$i) {
-
-        if ($dist[$a[$i] - 1] == PHP_INT_MAX) continue;
-
-        if ($dist[$b[$i] - 1] > $dist[$a[$i] - 1] + $c[$i]) {
-            $dist[$b[$i] - 1] = $dist[$a[$i] - 1] + $c[$i];
-        }
+for ($i = 1; $i <= $N; $i++) {
+    if ($arrF[$i] == 1 && $arrT[$i] == 1) {
+        
     }
 }
 
-$ans = $dist[$N - 1];
+$pos = 1;
 
-$negative = array();
-
-for ($i = 0; $i < $N; ++$i) {
-    $negative[$i] = false;
-}
-
-for ($loop = 0; $loop < $N ; ++$loop) {
-    for ($i = 0; $i < $M; ++$i) {
-        if ($dist[$a[$i] - 1] == PHP_INT_MAX) continue;
-
-        if ($dist[$b[$i] - 1] > $dist[$a[$i] - 1] + $c[$i]) {
-            $dist[$b[$i] - 1] = $dist[$a[$i] - 1] + $c[$i];
-            $negative[$b[$i] - 1] = true;
-        }
-
-        if ($negative[$a[$i] - 1] == true) {
-            $negative[$b[$i] - 1] = true;
-        }
-    }
-}
-
-if ($negative[$N - 1]) {
-    echo "inf" . PHP_EOL;
-} else {
-    echo -$ans . PHP_EOL;
-}

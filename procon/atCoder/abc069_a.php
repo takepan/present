@@ -1,22 +1,11 @@
 <?php
-/*
-    Problem URL : http://arc069.contest.atcoder.jp/tasks/arc069_a
 
-    Score  :
-    Result :
-    Time   : ms
-    Memory : KB
- */
+ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 'Off');
 
-fscanf(STDIN, "%d %d", $s, $c);
+// define('DEBUG', true);
+define('DEBUG', false);
 
-$cc = floor($c / 2);
-// if ($s < $cc) {
-    // ccが多く作れる
-    $ext = floor(($cc - $s) / 2);
-// }
+fscanf(STDIN, "%d %d", $n, $m);
 
-// printf("%d %d %d\n", $s, $cc, $ext);
-
-echo min($s, $cc) + max($ext, 0);
-echo PHP_EOL;
+echo (($n - 1) * ($m - 1)) . PHP_EOL;

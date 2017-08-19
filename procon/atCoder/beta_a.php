@@ -9,17 +9,12 @@ define('DEBUG', false);
 fscanf(STDIN, "%d", $N);
 $a = explode(" ", trim(fgets(STDIN)));
 
-define('MOD', 1000000007);
-
-$t = 0;
-$s = "";
-while($N > $t) {
-    $s .= $a[$t];
-    $t++;
-    $i = (int)$s;
-    while ($i >= MOD) {
-        $i %= MOD;
+$ret = 0;
+$mmax = 0;
+for ($i = 0; $i < $N; $i++) {
+    if ($mmax < $a[$i]) {
+        $ret++;
+        $mmax = $a[$i];
     }
-    $s = (string)$i;
 }
-echo $i . PHP_EOL;
+echo $ret . PHP_EOL;

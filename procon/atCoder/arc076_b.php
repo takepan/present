@@ -1,13 +1,15 @@
 <?php
 
-ini_set('error_reporting', E_ALL & ~E_NOTICE);
+ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 'Off');
 
-define('DEBUG', true);
-// define('DEBUG', false);
-
-define('MOD', pow(10, 9) + 7);
+// define('DEBUG', true);
+define('DEBUG', false);
 
 fscanf(STDIN, "%d", $N);
+
+$uf = new UnionFind($N);
+
 for ($i = 0; $i < $N; $i++) {
     fscanf(STDIN, "%d %d", $x[$i], $y[$i]);
 }
@@ -15,8 +17,10 @@ for ($i = 0; $i < $N; $i++) {
 asort($x);
 asort($y);
 
-var_dump($x);
-var_dump($y);
+if (DEBUG) {
+    var_dump($x);
+    var_dump($y);
+}
 $xk = array_keys($x);
 $xv = array_values($x);
 $yk = array_keys($y);
@@ -36,8 +40,10 @@ for ($i = 0; $i < $N - 1; $i++) {
 asort($xx);
 asort($yy);
 
-var_dump($xx);
-var_dump($yy);
+if (DEBUG) {
+    var_dump($xx);
+    var_dump($yy);    
+}
 
 $rest = $N - 1;
 $curX = 0;
@@ -53,55 +59,101 @@ while($rest > 0) {
     if (DEBUG) echo "XV: " . $tmpXV . " YK:" . $tmpYV . PHP_EOL;
     if ($tmpXV > $tmpYV) {
         list($posY1, $posY2) = explode("-", $tmpYK);
-        echo "BUILD YK : {$tmpYK}\n";
+        if (DEBUG) echo "{$posY1}------{$posY2}\n";
         unset($tmpYK);
-        $n1 = isset($flg[$posY1]);
-        $n2 = isset($flg[$posY2]);
-
-        if (!isset($flg[$posY1]) || !isset($flg[$posY2])) {
+        if ($uf->Find($posY1) != $uf->Find($posY2)) {
+            $uf->Union($posY1, $postY2);
+            echo "Y {$posY1} {$posY2}\n";
             $ans += $tmpYV;
             $rest--;
-            echo "***OK\n";
-            if (!isset($flg[$posY1])) {
-                $flg[$posY1] = 1;
-                // $rest--;
-            }
-            if (!isset($flg[$posY2])) {
-                $flg[$posY2] = 1;
-                // $rest--;
-            }
         }
     } else {
         list($posX1, $posX2) = explode("-", $tmpXK);
-        echo "BUILD XK : {$tmpXK}\n";
+        if (DEBUG) echo "{$posX1}------{$posX2}\n";
         unset($tmpXK);
-        if (!isset($flg[$posX1]) || !isset($flg[$posX2])) {
+        if ($uf->Find($posX1) != $uf->Find($posX2)) {
+            $uf->Union($posX1, $postX2);            
+            echo "X {$posX1} {$posX2}\n";
             $ans += $tmpXV;
             $rest--;
-            echo "***OK\n";
-            if (!isset($flg[$posX1])) {
-                $flg[$posX1] = 1;
-                // $rest--;
-            }
-            if (!isset($flg[$posX2])) {
-                $flg[$posX2] = 1;
-                // $rest--;
-            }
         }
     }
     // sleep(1);
 
-    for ($i = 0; $i < $N; $i++) {
-        if (isset($flg[$i])) {
-            echo "o ";
-        } else {
-            echo "x ";
-        }
-    }
-    echo PHP_EOL;
-    echo "count: " . $tmpXK . "-" . $tmpYK . PHP_EOL;
+    if (DEBUG) echo PHP_EOL;
+    if (DEBUG) echo "count: " . $tmpXK . "-" . $tmpYK . PHP_EOL;
 
-    echo $rest . PHP_EOL;
+    if (DEBUG) echo $rest . PHP_EOL;
 }
 
 echo $ans . PHP_EOL;
+
+    class UnionFind {
+
+        var $cnt;
+        var $data;
+        // var $debug = true;
+        var $debug = false;
+
+        function __construct($cnt = 10) {
+            $this->cnt = $cnt;
+            $this->data = array();
+            $this->MakeSetAll();
+        }
+
+        function MakeSetAll() {
+            for ($i = 1; $i <= $this->cnt; $i++) {
+                $this->MakeSet($i);
+            }
+        }
+
+        function DumpAll() {
+            if ($this->debug === false) return;
+            for ($i = 1; $i <= $this->cnt; $i++) {
+                printf("[%d]%d ", $i, $this->Find($i));
+            }
+            echo "\n";
+        }
+
+        function MakeSet($x) {
+            if (!isset($this->data[$x])) {
+                $this->data[$x] = array('parent' => null, 'rank' => null);
+            }
+            $this->data[$x]['parent'] = $x;
+            $this->data[$x]['rank'] = 0;
+        }
+ 
+        function Union($x, $y) {
+            $xRoot = $this->Find($x);
+            $yRoot = $this->Find($y);
+            // echo "xRoot: ".$xRoot. "\n";
+            // echo "yRoot: ".$yRoot. "\n";
+            // print_r($xRoot);
+            // print_r($yRoot);
+            if ($xRoot['rank'] > $yRoot['rank']) {
+                $this->data[$yRoot]['parent'] = $xRoot;
+                if ($this->debug) echo "$yRoot parent changes $xRoot\n";
+                // $yRoot['parent'] = $xRoot;
+            } elseif ($xRoot['rank'] < $yRoot['rank']) {
+                $this->data[$xRoot]['parent'] = $yRoot;
+                if ($this->debug) echo "$xRoot parent changes $yRoot\n";
+                // $xRoot['parent'] = $yRoot;
+            } elseif ($xRoot != $yRoot) {
+                $this->data[$yRoot]['parent'] = $xRoot;
+                if ($this->debug) echo "$yRoot parent changes $xRoot\n";
+                $this->data[$xRoot]['rank']++;
+                // $yRoot['parent'] = $xRoot;
+                // $xRoot['rank'] = $xRoot['rank'] + 1;
+            }
+            if ($this->debug) echo "OK\n";
+        }
+
+        function Find($x) {
+            if ($this->data[$x]['parent'] == $x) {
+                return $x;
+            } else {
+                $this->data[$x]['parent'] = $this->Find($this->data[$x]['parent']);
+                return $this->data[$x]['parent'];
+            }
+        }
+    }
