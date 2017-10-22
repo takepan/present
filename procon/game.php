@@ -2,7 +2,35 @@
 // Here your code !
 
 ini_set('error_reporting', E_ALL & ~E_NOTICE);
+
 $a = ["イアラ","ウェイト","オメガロ","ガルヒ","ガングリオンズ","クリオ","ジェノバ","スノウガ","ズビズバ","スペシウム","タグアズ","ドドンパ","トルネ","ネメシス","バイナリル","ハザード","パリピファイア","バルース","ヒラケゴマ","フェイク","プリズマ","ホルーガ","マッハ","マホマホ","ムート","ラリホフ","ランス","ループ","ロールウェイブ","ワロス"];
+
+$b = $a;
+
+foreach ($a as $key => $val) {
+    $b = $a;
+    $argv1 = $b[$key];
+    unset($b[$key]);
+    // var_dump($b);
+    solve($argv1, $b);
+
+
+    // solve();
+    // echo "val=" . $val . PHP_EOL;
+    // $key = array_search($bb, $a);
+    // echo "key=" . $key . PHP_EOL;
+
+    // solve($a);
+
+}
+
+function solve($spell, $array) {
+    $last = mb_substr($spell, -1);
+    echo "{$spell} {$last} " . count($array) . "\n";
+
+}
+
+exit;
 
 foreach ($a as $k) {
     $x1 = mb_substr($k, 0, 1);
