@@ -45,7 +45,7 @@ while($bool) {
 
 if (DEBUG) {
     var_dump($diff);
-    var_dump($A);   
+    var_dump($A);
 }
 
 
@@ -53,6 +53,6 @@ foreach ($diff as $key => $val) {
     if (($mmax - $K) / $key > 0 && ($mmax - $K) % $key == 0) {
         echo "POSSIBLE\n";
         exit;
-    }    
+    }
 }
 echo "IMPOSSIBLE\n";
