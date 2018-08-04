@@ -8,12 +8,8 @@
         Memory :  KB
      */
 
-    // define(DEBUG, true);
-    define('DEBUG', false);
-
     $answer = -1;
     $arr = array();
-    $arr2 = array();
     $arr3 = array();
 
     $fp = fopen('php://stdin', 'r+');
@@ -24,69 +20,27 @@
     }
 
     for ($i = 0; $i < $M; $i++) {
-        list($a, $b) = explode(' ', trim(fgets($fp)));
-        $k = sprintf("%06d-%06d", $a, $b);
-        $arr2[] = $k;
-    }
+        list($x, $y) = explode(' ', trim(fgets($fp)));
 
-    // sort($arr2);
-    if (DEBUG) var_dump($arr2);
+        $c1 = $arr[$x];
+        $c2 = $arr[$y];
+        if ($c1 == $c2) continue;
 
-    foreach ($arr2 as $k) {
-        list($x, $y) = explode("-", $k);
-        $x  = (int) $x;
-        $y  = (int) $y;
-        if (DEBUG) echo "{$x}-{$y}\n";
-        $m = min($arr[$x], $arr[$y]);
-        if ($arr[$x] != $m) {
-            if (DEBUG) echo "AAA\n";
-            $tmpArr = array();
-            foreach ($arr3[$arr[$x]] as $k => $v) {
-                $arr[$v] = $m;
-                if (count($arr3[$v])>0) {
-                    $tmpArr = $arr3[$v];
-                    $tmpNum = $v;
-                }
-            }
-            $arr3[$arr[$y]] = array_merge($arr3[$arr[$y]], $tmpArr);
-            $arr3[$tmpNum] = array();
-        } elseif ($arr[$y] != $m) {
-            if (DEBUG) echo "BBB\n";
-            $tmpArr = array();
-            foreach ($arr3[$arr[$y]] as $k => $v) {
-                if (DEBUG) echo "loop2 : \$v = $v\n";
-                if (DEBUG) var_dump($arr3[$v]);
-                $arr[$v] = $m;
-                if (count($arr3[$v])>0) {
-                    $tmpArr = $arr3[$v];
-                    $tmpNum = $v;
-                }
-            }
-            if (DEBUG) echo "tmpArr=\n";
-            if (DEBUG) var_dump($tmpArr);
-            $arr3[$arr[$x]] = array_merge($arr3[$arr[$x]], $tmpArr);
-            $arr3[$tmpNum] = array();
+        if ($c1 > $c2) {
+            $minmin = $c2;
+            $maxmax = $c1;
         } else {
-            if (DEBUG) echo "CCC\n";
-
-
+            $minmin = $c1;
+            $maxmax = $c2;
         }
-        // $arr[$x] = $m;
-        // $arr[$y] = $m;
-        // var_dump($arr);
-        if (DEBUG) {
-            foreach ($arr3 as $k => $v) {
-                echo "{$k} -> {$arr[$k]}\t\t\t";
-                if (is_array($v)) {
-                    echo "{$k} : " . implode(",", $v) . PHP_EOL;
-                }
-            }
-            echo PHP_EOL;
+
+        $arr3[$minmin] = array_merge($arr3[$minmin], $arr3[$maxmax]);
+        foreach ($arr3[$maxmax] as $k => $v) {
+            $arr[$v] = $minmin;
         }
+        unset($arr3[$maxmax]);
     }
 
-    foreach ($arr3 as $k => $v) {
-        if (count($v) > 0) $answer++;
-    }
+    $answer += count($arr3);
 
     echo $answer . PHP_EOL;

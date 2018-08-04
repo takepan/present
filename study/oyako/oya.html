@@ -1,0 +1,70 @@
+<html><head>
+<title>メインウィンドウ</title>
+
+<style>
+
+h1{
+font-size:18px;
+}
+
+#box{
+	width:100px;
+	height:100px;
+	background-color:#ccc;
+	position:absolute;
+	left:0;
+}
+
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+var sub_win;
+var flag=true;
+
+// サブウィンドウを開く処理
+$("#btn").click(function(){
+	
+	sub_win=window.open($(this).attr("href"), "window_name", "width=300,height=500");
+	return false;
+});
+
+
+$("#btn-anime").click(function(){
+	
+	flag=!flag;
+	
+	var dom=sub_win.document.getElementById('box');
+	
+	if(flag){
+		$(dom).stop().animate({
+		width:300+"px",
+		height:300+"px"
+	},500);
+	}else{
+		$(dom).stop().animate({
+		width:100+"px",
+		height:100+"px"
+	},500);
+	}
+	
+});
+
+
+});
+// -->
+</script>
+
+</head>
+<body>
+<h1>【JavaScript】子ウィンドウ／親ウィンドウのお互いの要素を操作するには！？</h1>
+<p><a id="btn" href="sub.html" target="_blank">子ウィンドウを開く</a></p>
+<p><a href="#" id="btn-anime">子ウィンドウのボックスをアニメーションさせる。</a></p>
+
+<p>下のボックスは子ウィンドウからの操作でアニメーションします。</p>
+
+<div id="box"></div>
+
+
+</body></html>
