@@ -1,0 +1,61 @@
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script>
+/*
+	    window.onload = function () {
+	        document.testform.textbox.value="他の要素";
+	        store_v();
+	    };
+*/
+	    $(document).ready(function(){
+	        document.testform.textbox.value="他の要素";
+	        store_v();
+	    });
+
+	    var data = [];
+
+	    // v_ で始まる要素の値を格納
+	    function store_v() {
+	    	$('input[name^=v_]').each(function(){
+				// console.log($(this).attr('name'));
+				name = $(this).attr('name');
+				value = $(this).val();
+
+				data[name] = value;
+			});
+			console.log(data);
+	    }
+		$(function() {
+		 
+		  // v_ で始まる要素のフォーカスが外れたら発動
+		  $('input[name^=v_]').blur(function() {
+		 
+		    var id = $(this).attr("name");
+		    // alert(id);
+		    // console.log('blur ' + id);
+
+			name = $(this).attr('name');
+		    new_value = $(this).val();
+
+		    if (data[name] != new_value) {
+			    console.log(name + "が" + data[name] + "から" + new_value + "に変更");
+		    } else {
+			    console.log(name + "は変更されませんでした");
+		    }
+
+		    data[name] = new_value
+		 
+		  });
+		});
+	</script>
+</head>
+<body>
+    <form name="testform">
+        <input type="text" name="textbox" value="" /><br>
+        v_1:<input type="textbox" name="v_1" value="3"><br>
+        v_10:<input type="textbox" name="v_10" value="2"><br>
+        v_100:<input type="textbox" name="v_100" value="5"><br>
+    </form>
+</body>
+</html>
