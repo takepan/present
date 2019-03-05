@@ -1,0 +1,142 @@
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+        .error_message {
+          font-size: 20px;
+          font-color: #ff3333;
+          border: 10px double  #ff9999;
+          padding: 10px;
+          margin:10px;
+        }
+    </style>
+	<script>
+/*
+	    window.onload = function () {
+	        document.form.textbox.value="他の要素";
+	        store_v();
+	    };
+*/
+	    $(document).ready(function(){
+	        document.form.maximum.value="7";
+	        store_v();
+	    });
+
+	    var data = [];
+
+	    // v_ で始まる要素の値を格納
+	    function store_v() {
+	    	$('input[name^=v_]').each(function(){
+				// console.log($(this).attr('name'));
+				name = $(this).attr('name');
+				value = $(this).val();
+
+				data[name] = value;
+			});
+			console.log(data);
+	    }
+
+        function validate() {
+            console.log('validate start');
+
+            m = $('input[name="maximum"]').val();
+            // console.log(m);
+
+            var tmp = [];
+            var uniq = 0;
+
+            $('input[name^=v_]').each(function(){
+                tmpval = $(this).val();
+                // console.log(tmpval);
+                var pattern = /^[1-9][0-9]*$/;
+                if (pattern.test(tmpval) && tmpval >= 1 && tmpval <= m) {
+                    if (tmp[tmpval]) {
+                        // console.log("DUP");
+                    } else {
+                        // console.log("UNQ");
+                        uniq++;
+                        tmp[tmpval] = true;
+                    }
+                }
+            });
+            // console.log('uniq:' + uniq);
+
+            result = m == uniq;
+            console.log(result);
+
+            return result;
+
+
+        }
+
+        function disp_error() {
+            $(function(){
+              $(".error_message").show();
+              $(".error_message:not(:animated)").fadeIn("slow",function(){
+                $(this).delay(3000).fadeOut("slow");
+              });
+            });
+        }
+
+		$(function() {
+
+		  // v_ で始まる要素のフォーカスが外れたら発動
+		  $('input[name^=v_]').blur(function() {
+
+		    var id = $(this).attr("name");
+		    // alert(id);
+		    // console.log('blur ' + id);
+
+			name = $(this).attr('name');
+		    new_value = $(this).val();
+
+
+
+		    if (data[name] != new_value) {
+			    console.log(name + "が" + data[name] + "から" + new_value + "に変更");
+		    } else {
+			    console.log(name + "は変更されませんでした");
+		    }
+
+		    data[name] = new_value
+
+		  });
+
+          // サブミット時処理
+          $('#form').submit(function(){
+
+                //
+                // バリデーションチェックや、データの加工を行う。
+                //
+                // console.log('submit !!');
+                result = validate();
+                if (!result) {
+                    disp_error();
+                }
+                return result;
+                //バリデーションチェックの結果submitしない場合、return falseすることでsubmitを中止することができる。
+                // return false;
+            })
+		});
+	</script>
+</head>
+<body>
+    <form id="form" name="form">
+        最大値:<input type="text" name="maximum" value="" /><br>
+        月曜日:<input type="text" name="v_mon" value="3"><br>
+        火曜日:<input type="text" name="v_tue" value="2"><br>
+        水曜日:<input type="text" name="v_web" value="5"><br>
+        木曜日:<input type="text" name="v_thu" value="1"><br>
+        金曜日:<input type="text" name="v_fri" value="6"><br>
+        土曜日:<input type="text" name="v_sat" value="4"><br>
+        日曜日:<input type="text" name="v_sun" value="7"><br>
+
+        <div class="error_message" style="display: none;">
+            入力内容が正しくありません
+        <!-- <button class="close">お知らせを消す</button> -->
+        </div>
+
+        <input type="submit" id="submit">
+    </form>
+</body>
+</html>
